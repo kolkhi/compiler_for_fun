@@ -42,7 +42,9 @@ shared_ptr<lexer::Token> lexer::Lexer::scan()
         return scan_word();
     }
 
-    return make_shared<Token>(peek);
+    auto token = make_shared<Token>(peek);
+    peek = ' ';
+    return token;
 }
 
 void lexer::Lexer::skip_insignificant_chars()

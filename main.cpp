@@ -3,8 +3,9 @@
 #include <vector>
 #include <fstream>
 
-#include "./Lexer/lexer.h"
-#include "./Parser/postfix.h"
+//#include "./Lexer/lexer.h"
+//#include "./Parser/postfix.h"
+#include "cradle.h"
 
 using namespace std;
 
@@ -34,8 +35,10 @@ int main(int argc, char* argv[])
         cout << line << endl;
     }*/
 
-    auto postfix_transaltor = parser::Postfix();
-    postfix_transaltor.translate();
+    //auto postfix_transaltor = parser::Postfix();
+    //postfix_transaltor.translate();
 
+    cradle::Cradle cradle = cradle::Cradle();
+    cradle.init();
     return 0;
 }

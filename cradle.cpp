@@ -81,3 +81,110 @@ void cradle::Cradle::emitln(const std::string& s)
     //std::println();
     std::cout << std::endl;
 }
+
+void cradle::Cradle::term()
+{
+    factor();
+    while (look == '*' || look == '/')
+    {
+        emitln(std::string("push eax"));
+        switch (look)
+        {
+        case '*':
+            multiply();
+            break;
+        case '/':
+            divide();
+            break;
+        default:
+            expected("Multiplicative Operator");
+            break;
+        }
+    }
+}
+
+void cradle::Cradle::factor()
+{
+    if (look == '(')
+    {
+        match('(');
+        expression();
+        match(')');
+    }
+    else
+    {
+        emitln(std::string("mov eax, ") + getNumber());
+    }
+}
+
+void cradle::Cradle::add()
+{
+    match('+');
+    term();
+
+    emitln(std::string("pop ecx"));
+    emitln(std::string("add eax, ecx"));
+}
+
+void cradle::Cradle::subtract()
+{
+    match('-');
+    term();
+
+    emitln(std::string("pop ecx"));
+    emitln(std::string("sub eax, ecx"));
+    emitln(std::string("neg eax"));
+}
+
+void cradle::Cradle::multiply()
+{
+    match('*');
+    factor();
+
+    emitln(std::string("pop ecx"));
+    emitln(std::string("mul ecx"));
+}
+
+void cradle::Cradle::divide()
+{
+    match('/');
+    factor();
+
+    emitln(std::string("pop ecx"));
+    emitln(std::string("mov edx, 0"));
+    emitln(std::string("div ecx"));
+}
+
+void cradle::Cradle::expression()
+{
+    if(isaddop(look))
+    {
+        emitln(std::string("mov eax, 0"));
+    }
+    else
+    {
+        term();
+    }
+
+    while (isaddop(look))
+    {
+        emitln(std::string("push eax"));
+        switch (look)
+        {
+        case '+':
+            add();
+            break;
+        case '-':
+            subtract();
+            break;
+        default:
+            expected("Additive Operator");
+            break;
+        }
+    }
+}
+
+bool cradle::Cradle::isaddop(char c)
+{
+    return c == '+' || c == '-';
+}

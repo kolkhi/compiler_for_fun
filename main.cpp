@@ -40,5 +40,6 @@ int main(int argc, char* argv[])
 
     cradle::Cradle cradle = cradle::Cradle();
     cradle.init();
+    cradle.expression();
     return 0;
 }

@@ -12,8 +12,10 @@ namespace cradle
         ~Cradle() = default;
 
         void init();
+        void expression();
 
-        char getName();
+    private:
+    char getName();
         char getNumber();
         
         void getChar();
@@ -27,6 +29,15 @@ namespace cradle
         void emit(const std::string& s);
         void emitln(const std::string& s);
 
+        void term();
+        void factor();
+        
+        void add();
+        void subtract();
+        void multiply();
+        void divide();
+        
+        bool isaddop(char c);
     private:
         char look; // Lookahead character
 
